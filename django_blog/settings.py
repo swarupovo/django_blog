@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blogpost'
+    # 'django_mfa',
+    'blogpost',
+    # 'social_django',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +50,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+
+    # 'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'django_blog.urls'
@@ -63,10 +68,20 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # 'social_django.context_processors.backends',  # <--
+                # 'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
+
+# AUTHENTICATION_BACKENDS = (
+#     'social_core.backends.github.GithubOAuth2',
+#     'social_core.backends.facebook.FacebookOAuth2',
+#
+#     'django.contrib.auth.backends.ModelBackend',
+# )
 
 WSGI_APPLICATION = 'django_blog.wsgi.application'
 
@@ -77,7 +92,7 @@ WSGI_APPLICATION = 'django_blog.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django_blog',
+        'NAME': 'django_blog1',
         'USER': 'root',
         'PASSWORD': 'password',
         'HOST': 'localhost',  # Or an IP Address that your DB is hosted on
@@ -134,3 +149,12 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'MEDIA')
 
 MEDIA_URL = '/media/'
+
+
+
+
+# SOCIAL_AUTH_LOGIN_ERROR_URL = '/settings/'
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/settings/'
+# SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+# SOCIAL_AUTH_GITHUB_KEY = '13599985263541e9dcc9'
+# SOCIAL_AUTH_GITHUB_SECRET = '76e0726ab5698d8f62cc6833f428b71689428c3d'
