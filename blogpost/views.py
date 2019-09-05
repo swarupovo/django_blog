@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.views.generic.base import View
 from django.views.decorators.csrf import csrf_exempt
 
-from blogpost.models import Blogger, Blog, BlogImage, Comments
+from blogpost.models import Blogger, Blog, BlogImage, Comments, Share
 
 
 @csrf_exempt
@@ -198,12 +198,13 @@ def blog_list(request):
         print(blogs)
         usr_obj = User.objects.get(username=request.user)
         blogger_obj = Blogger.objects.get(blogger=usr_obj)
+        share_obj = Share.objects.all()
 
 
         images = BlogImage.objects.all()
         comment_obj = Comments.objects.all()
         return render(request, "blog_list.html", {'blogs': blogs, 'img_path': blogger_obj.profile_photo,
-                                                  'blog_images': images, "comments":comment_obj})
+                                                  'blog_images': images, "comments":comment_obj, "share_blogs":share_obj})
     else:
         pass
 
@@ -241,12 +242,33 @@ def comment_blog(request, blog_id):
             blog_obj = Blog.objects.get(id=blog_id)
             blogger_obj = Blogger.objects.get(blogger=request.user)
             comment = request.POST['comment']
-            Comments.objects.create(user=blogger_obj, blog=blog_obj, comment=comment)
+            comment_obj = Comments.objects.create(user=blogger_obj, blog=blog_obj, comment=comment)
+            comment_obj.save()
             messages.success(request, "Commented Successfully")
             return HttpResponseRedirect('/blog/list/')
         except Exception as E:
             messages.error("Somthing went wrong %s" %E)
             return HttpResponseRedirect('/blog/list/')
+    else:
+        return HttpResponse("<h2>Method is not allowed</h2>")
+
+@csrf_exempt
+@login_required(login_url='login')
+def share_blog(request, blog_id):
+    if request.method == "GET":
+        try:
+            blog_obj = Blog.objects.get(id=blog_id)
+            blogger_obj = Blogger.objects.get(blogger=request.user)
+            share_obj = Share.objects.create(blogger=blogger_obj, blog=blog_obj)
+            share_obj.save()
+            blog_obj.shared.add(share_obj)
+            messages.success(request, "Share the blog is done successfully")
+            return HttpResponseRedirect('/blog/list/')
+
+        except Exception as E:
+            messages.error(request, "Somthing went wrong %s" %E)
+            return HttpResponseRedirect('/blog/list/')
+
     else:
         return HttpResponse("<h2>Method is not allowed</h2>")
 

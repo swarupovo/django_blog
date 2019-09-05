@@ -15,12 +15,14 @@ class Blogger(models.Model):
     following = models.ManyToManyField('self', default=None)
 
 
+
 class Blog(models.Model):
     blogger = models.ForeignKey(Blogger, on_delete=models.CASCADE)
     title = models.CharField(max_length=100, default="Django Post", blank=True)
     content = models.TextField(blank=False)
     # upload_img = models.ImageField(upload_to='images/blog_pic/')
     like = models.ManyToManyField(Blogger, related_name="blog_like")
+    shared = models.ManyToManyField('Share', related_name="share_blog")
     #
 
 
@@ -35,6 +37,14 @@ class Comments(models.Model):
     comment = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+class Share(models.Model):
+    blogger = models.ForeignKey(Blogger, on_delete=models.CASCADE, default=1)
+    text = models.TextField()
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, default=1)
+    created = models.DateTimeField(auto_now_add=True)
+    update = models.DateTimeField(auto_now=True)
+
 
 
 
