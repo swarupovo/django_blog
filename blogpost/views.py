@@ -1,3 +1,4 @@
+import pyrebase as pyrebase
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -6,6 +7,7 @@ from django.shortcuts import render
 from django.contrib import messages
 
 # Create your views here.
+from django.views.generic import ListView
 from django.views.generic.base import View
 from django.views.decorators.csrf import csrf_exempt
 
@@ -189,12 +191,30 @@ def blogger_details(request, id=None):
         blogger_obj = Blogger.objects.get(blogger=usr_obj)
         return render(request, "user_details.html", {'img_path': blogger_obj.profile_photo})
 
+# class ArticleListView(ListView):
+#
+#     model = Article
+#     paginate_by = 100  # if pagination is desired
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['now'] = timezone.now()
+#         return context
+
+
+from django.core.paginator import Paginator
+
 
 @csrf_exempt
 @login_required(login_url='/login/')
 def blog_list(request):
     if request.method == "GET":
-        blogs = Blog.objects.all()
+        blog_obj = Blog.objects.all()
+        paginator = Paginator(blog_obj, 3)  # Show 25 contacts per page
+
+        page = request.GET.get('page')
+        blogs = paginator.get_page(page)
+
         print(blogs)
         usr_obj = User.objects.get(username=request.user)
         blogger_obj = Blogger.objects.get(blogger=usr_obj)
@@ -204,9 +224,22 @@ def blog_list(request):
         images = BlogImage.objects.all()
         comment_obj = Comments.objects.all()
         return render(request, "blog_list.html", {'blogs': blogs, 'img_path': blogger_obj.profile_photo,
-                                                  'blog_images': images, "comments":comment_obj, "share_blogs":share_obj})
+                                                  'blog_images': images, "comments":comment_obj,
+                                                  "share_blogs":share_obj})
     else:
         pass
+
+
+
+
+# @csrf_exempt
+# class BlogListView(ListView):
+#     template_name = 'blog_list.html'
+#     queryset = Blog.objects.all()
+#     context_object_name = 'books'
+#     paginate_by = 10
+
+
 
 
 @csrf_exempt
@@ -273,3 +306,37 @@ def share_blog(request, blog_id):
         return HttpResponse("<h2>Method is not allowed</h2>")
 
 
+
+
+config = {
+        'apiKey': "AIzaSyC-ZzycUkpYrJc3zzfBojvrorzuxZreaqk",
+        'authDomain': "djangoblog-e7b68.firebaseapp.com",
+        'databaseURL': "https://djangoblog-e7b68.firebaseio.com",
+        'projectId': "djangoblog-e7b68",
+        'storageBucket': "djangoblog-e7b68.appspot.com",
+        'messagingSenderId': "400675253772",
+         'appId': "1:400675253772:web:d97559fd57b41cd3db0829"
+}
+firebase = pyrebase.initialize_app(config)
+auth = firebase.auth()
+
+
+
+def singIn(request):
+    print(firebase)
+
+    return render(request, "signIn.html")
+
+
+def postsign(request):
+    email=request.POST.get('email')
+    passw = request.POST.get("pass")
+    try:
+        print(auth)
+        user = auth.sign_in_with_email_and_password(email,passw)
+        print(user)
+    except:
+        message = "invalid cerediantials"
+        return render(request,"signIn.html",{"msg":message})
+    print(user)
+    return render(request, "welcome.html",{"e":email})

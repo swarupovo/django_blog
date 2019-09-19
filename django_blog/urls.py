@@ -21,10 +21,19 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.views.generic import RedirectView
 
+
+
+
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', include('blogpost.urls')),
     url(r'^$', RedirectView.as_view(url='/login/')),
+    # url('', include('social.apps.django_app.urls', namespace='social')),
+    # url(r'^$', 'django_social_app.views.login'),
+    # url(r'^home/$', 'django_social_app.views.home'),
+    # url(r'^logout1/$', 'django_social_app.views.logout'),
+
+
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

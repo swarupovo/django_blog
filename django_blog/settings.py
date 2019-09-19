@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from config import *
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,6 +42,7 @@ INSTALLED_APPS = [
     # 'django_mfa',
     'blogpost',
     # 'social_django',
+    # 'social.apps.django_app.default',
 ]
 
 MIDDLEWARE = [
@@ -50,10 +53,24 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'social.apps.django_app.context_processors.backends',
+    # 'social.apps.django_app.context_processors.login_redirect',
 
 
     # 'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
+
+# TEMPLATE_CONTEXT_PROCESSORS = (
+#     'django.contrib.auth.context_processors.auth',
+#     'django.core.context_processors.debug',
+#     'django.core.context_processors.i18n',
+#     'django.core.context_processors.media',
+#     'django.core.context_processors.static',
+#     'django.core.context_processors.tz',
+#     'django.contrib.messages.context_processors.messages',
+#     'social.apps.django_app.context_processors.backends',
+#     'social.apps.django_app.context_processors.login_redirect',
+# )
 
 ROOT_URLCONF = 'django_blog.urls'
 
@@ -77,9 +94,9 @@ TEMPLATES = [
 ]
 
 # AUTHENTICATION_BACKENDS = (
-#     'social_core.backends.github.GithubOAuth2',
-#     'social_core.backends.facebook.FacebookOAuth2',
-#
+#     # 'social.backends.facebook.FacebookOAuth2',
+#     # 'social.backends.google.GoogleOAuth2',
+#     'social.backends.twitter.TwitterOAuth',
 #     'django.contrib.auth.backends.ModelBackend',
 # )
 
@@ -152,7 +169,14 @@ MEDIA_URL = '/media/'
 
 
 
+# SOCIAL_AUTH_TWITTER_KEY = '783730485784551424-qVTj0jmugqIRd6YANv1NZwXqm0DbyTd'
+# SOCIAL_AUTH_TWITTER_SECRET = '2PCFkaBu1ovjObPuVOSs9pNj3hlWGlmG22P1oWKdIhShS '
+#
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/register/'
+# SOCIAL_AUTH_LOGIN_URL = '/login/'
 
+# SOCIAL_AUTH_TWITTER_KEY = 'update me'
+# SOCIAL_AUTH_TWITTER_SECRET = 'update me'
 # SOCIAL_AUTH_LOGIN_ERROR_URL = '/settings/'
 # SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/settings/'
 # SOCIAL_AUTH_RAISE_EXCEPTIONS = False

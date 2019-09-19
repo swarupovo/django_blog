@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
 from blogpost.validate import max_image_cheque
+import jsonfield
 
 
 class Blogger(models.Model):
@@ -47,5 +48,6 @@ class Share(models.Model):
 
 
 
-
+class MyModel(models.Model):
+    the_json = jsonfield.JSONField()
 

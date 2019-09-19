@@ -1,7 +1,8 @@
+from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 from blogpost.views import user_login, user_register, blogger_list, follow_blogger, unfollow_blogger, blogger_details, \
-    blog_list, blog_post, Logout, like_blog, comment_blog, share_blog
+    blog_list, blog_post, Logout, like_blog, comment_blog, share_blog, singIn, postsign
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
@@ -17,5 +18,7 @@ urlpatterns = [
     path('post/blog/', blog_post, name="post_blog"),
     path('blog/list/like/<int:blog_id>/', like_blog, name="like_blog"),
     path('comment/<blog_id>/', comment_blog, name="post_comment"),
-    path('share/<blog_id>/', share_blog, name="share_blog")
+    path('share/<blog_id>/', share_blog, name="share_blog"),
+    path('signIn/', singIn),
+    path('postsign/', postsign)
 ]
