@@ -322,6 +322,8 @@ auth = firebase.auth()
 
 
 
+
+
 def singIn(request):
     print(firebase)
 

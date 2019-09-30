@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
@@ -39,6 +41,7 @@ class Comments(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+
 class Share(models.Model):
     blogger = models.ForeignKey(Blogger, on_delete=models.CASCADE, default=1)
     text = models.TextField()
@@ -47,7 +50,12 @@ class Share(models.Model):
     update = models.DateTimeField(auto_now=True)
 
 
-
 class MyModel(models.Model):
     the_json = jsonfield.JSONField()
+
+
+class Product(models.Model):
+    fld = models.CharField(max_length=36, primary_key=True, default=uuid.uuid4)
+    product_name = models.CharField(max_length=30)
+
 
